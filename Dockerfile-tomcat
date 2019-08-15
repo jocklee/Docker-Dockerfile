@@ -1,0 +1,25 @@
+#使用的基础镜像 可使用hub.c.163.com/library/tomcat:latest
+FROM 192.168.xxx.xx:5000/whale/tomcat:v1
+
+MAINTAINER whale kleechn@163.com
+
+#把当前目录下的jdk文件夹添加到镜像
+#ADD ./docker/catalina.sh /usr/local/tomcat/bin/catalina.sh
+
+#把当前目录下的tomcat文件夹添加到镜像
+#ADD ./docker/server.xml /usr/local/tomcat/conf/server.xml
+#ADD ./docker/logging.properties /usr/local/tomcat/conf/logging.properties
+
+ADD demo.war /usr/local/tomcat/webapps
+#添加环境变量
+#ENV JAVA_HOME /apps/java/jdk
+#ENV CATALINA_HOME /apps/java/tomcat
+#ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
+#设置时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
+#暴露8082端口
+EXPOSE 8080
+#启动时运行tomcat
+CMD ["/usr/local/tomcat/bin/catalina.sh","run"]
